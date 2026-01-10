@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
@@ -9,6 +10,7 @@ export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
+        private configService: ConfigService,
     ) { }
 
     async register(dto: RegisterDto) {
@@ -46,9 +48,19 @@ export class AuthService {
     }
 
     private generateToken(userId: number, email: string) {
+        const secret = this.configService.get<string>('JWT_SECRET');
+
+        if (!secret) {
+            throw new Error('JWT_SECRET must be defined in environment variables');
+        }
+
         const payload = { sub: userId, email };
+
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign(payload, {
+                secret: secret,
+                expiresIn: '60m', // Los tokens expiran en 1 hora
+            }),
         };
     }
 }

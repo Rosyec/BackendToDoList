@@ -16,7 +16,7 @@ export interface AuthenticatedUser {
 }
 
 @Injectable()
-export class JwtStrategyService extends PassportStrategy(Strategy) {
+export class JwtMiddlewareService extends PassportStrategy(Strategy) {
     constructor(private configService: ConfigService) {
         const secret = configService.get<string>('JWT_SECRET');
 
