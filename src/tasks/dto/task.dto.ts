@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsBoolean, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsOptional } from 'class-validator';
+import { TaskStatus } from '../../../prisma/generated/client';
 
 export class CreateTaskDto {
     @IsNotEmpty()
@@ -20,6 +21,6 @@ export class UpdateTaskDto {
     description?: string;
 
     @IsOptional()
-    @IsBoolean()
-    isCompleted?: boolean;
+    @IsEnum(TaskStatus)
+    status?: TaskStatus;
 }
