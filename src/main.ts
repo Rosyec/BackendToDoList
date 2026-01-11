@@ -12,6 +12,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   // Crea la aplicación NestJS con el módulo raíz
   const app = await NestFactory.create(AppModule);
+  app.enableCors({ origin: '*' });
 
   // Inicia el servidor en el puerto especificado
   await app.listen(process.env.PORT ?? 3000);

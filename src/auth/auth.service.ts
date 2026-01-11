@@ -49,8 +49,15 @@ export class AuthService {
             name: dto.name,
         });
 
-        // Genera y retorna el token JWT
-        return this.generateToken(user.id, user.email);
+        // Genera el token JWT
+        const token = this.generateToken(user.id, user.email);
+
+        // Retorna el usuario (sin password) y el token
+        const { password, ...userWithoutPassword } = user;
+        return {
+            user: userWithoutPassword,
+            ...token,
+        };
     }
 
     /**
@@ -74,8 +81,15 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        // Genera y retorna el token JWT
-        return this.generateToken(user.id, user.email);
+        // Genera el token JWT
+        const token = this.generateToken(user.id, user.email);
+
+        // Retorna el usuario (sin password) y el token
+        const { password, ...userWithoutPassword } = user;
+        return {
+            user: userWithoutPassword,
+            ...token,
+        };
     }
 
     /**
