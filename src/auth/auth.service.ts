@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
+import { JwtConfigService } from './jwt-config.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -14,14 +13,13 @@ import * as bcrypt from 'bcrypt';
  * - Generación de tokens JWT
  *
  * Utiliza bcrypt para el hash seguro de contraseñas
- * Utiliza JWT para autenticación stateless
+ * Utiliza JwtConfigService para la generación de tokens JWT
  */
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: UsersService,
-        private jwtService: JwtService,
-        private configService: ConfigService,
+        private jwtConfigService: JwtConfigService,
     ) { }
 
     /**
@@ -86,26 +84,9 @@ export class AuthService {
      * @param userId - ID del usuario
      * @param email - Email del usuario
      * @returns Objeto con el access_token
-     * @throws Error si JWT_SECRET no está definido
      * @private
      */
     private generateToken(userId: number, email: string) {
-        // Obtiene el secreto JWT desde las variables de entorno
-        const secret = this.configService.get<string>('JWT_SECRET');
-
-        if (!secret) {
-            throw new Error('JWT_SECRET must be defined in environment variables');
-        }
-
-        // Payload del token: contiene el ID del usuario (sub) y email
-        const payload = { sub: userId, email };
-
-        // Firma el token con el secreto y establece expiración de 1 hora
-        return {
-            access_token: this.jwtService.sign(payload, {
-                secret: secret,
-                expiresIn: '60m', // Los tokens expiran en 1 hora
-            }),
-        };
+        return this.jwtConfigService.generateToken(userId, email);
     }
 }
