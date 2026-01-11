@@ -29,11 +29,18 @@ enum TaskStatus {
   COMPLETED
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model Task {
   id          Int        @id @default(autoincrement())
   title       String
   description String?
   status      TaskStatus @default(PENDING)
+  priority    Priority   @default(MEDIUM)
   userId      Int
   user        User       @relation(fields: [userId], references: [id])
   createdAt   DateTime   @default(now())
