@@ -7,6 +7,7 @@ Esta es una API profesional desarrollada como prueba técnica, enfocada en la es
 - **Framework:** [NestJS](https://nestjs.com/)
 - **ORM:** [Prisma](https://www.prisma.io/)
 - **Base de Datos:** [Supabase](https://supabase.com/) (PostgreSQL)
+  **Seguridad:** [Bcrypt](https://www.npmjs.com/package/bcrypt) (Hashing de contraseñas)
 - **Autenticación:** [JWT](https://jwt.io/) (JSON Web Tokens)
 - **Lenguaje:** TypeScript
 
@@ -14,6 +15,7 @@ Esta es una API profesional desarrollada como prueba técnica, enfocada en la es
 
 ## 📋 Características
 
+- **Seguridad Criptográfica:** Implementación de **Bcrypt** para el hashing de contraseñas con un factor de coste (salt) seguro antes de la persistencia.
 - **Autenticación Robusta:** Flujo completo de registro e inicio de sesión.
 - **Seguridad:** Implementación de JWT para la protección de rutas.
 - **Persistencia:** Gestión de datos relacionales en la nube con Supabase.
